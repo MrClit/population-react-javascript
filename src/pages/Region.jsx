@@ -27,26 +27,26 @@ export default function RegionPage() {
   // Seleccionamos los datos en función del parámetro de la ruta
   if (data && !isError) {
     isRegionValid = data.continentsList.includes(params.region) || params.region === 'global';
-    if (!isRegionValid) {
-      // do nothing
-    } else if (params.region === 'global') {
-      title = 'Global Population by Continent';
-      selectedData = data.populationByContinent.map(item => {
-        return {
-          name: item.continent,
-          population: item.population,
-        }
-      })
-    } else {
-      title = `${params.region} Population by Country`;
-      selectedData = data.populationByCountry
-        .filter(item => item.continent === params.region)
-        .map(item => {
+    if (isRegionValid) {
+      if (params.region === 'global') {
+        title = 'Global Population by Continent';
+        selectedData = data.populationByContinent.map(item => {
           return {
-            name: item.country,
+            name: item.continent,
             population: item.population,
           }
         })
+      } else {
+        title = `${params.region} Population by Country`;
+        selectedData = data.populationByCountry
+          .filter(item => item.continent === params.region)
+          .map(item => {
+            return {
+              name: item.country,
+              population: item.population,
+            }
+          })
+      }
     }
 
     // Filtramos los datos seleccionamos en base el mínimo de población
